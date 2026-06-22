@@ -67,6 +67,26 @@ async function run() {
         });
 
 
+        // Categories API
+
+        app.get("/categories", async (req, res) => {
+
+            const result = await productsCollection.aggregate([
+
+                {
+                    $group: {
+                        _id: "$category"
+                    }
+                }
+
+            ]).toArray();
+
+
+            res.send(result);
+
+        });
+        
+
         // Product Details API
 
         app.get("/products/:id", async (req, res) => {
