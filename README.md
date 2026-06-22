@@ -8,7 +8,7 @@ ReSellHub Server provides secure REST APIs for managing authentication, products
 
 ## Live URL
 
-🔗 
+🔗 https://resell-hub-server.onrender.com/
 
 ---
 
