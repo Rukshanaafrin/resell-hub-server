@@ -30,7 +30,7 @@ async function run() {
         await client.connect();
 
         // Database
-        const database = client.db("resellHubDB");
+        const database = client.db("resellhub_db");
 
         // Collections
         const usersCollection = database.collection("users");
@@ -43,6 +43,17 @@ async function run() {
         app.get("/users", async (req, res) => {
             const result = await usersCollection.find().toArray();
             res.send(result);
+        });
+
+        // Featured Products API
+        app.get("/featured-products", async (req, res) => {
+
+            const result = await productsCollection.find().toArray();
+            console.log(result);
+                
+
+            res.send(result);
+
         });
 
         await client.db("admin").command({ ping: 1 });
