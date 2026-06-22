@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 dotenv.config();
 
@@ -50,11 +50,45 @@ async function run() {
 
             const result = await productsCollection.find().toArray();
             console.log(result);
-                
+
 
             res.send(result);
 
         });
+
+        // All Products API
+
+        app.get("/products", async (req, res) => {
+
+            const result = await productsCollection.find().toArray();
+
+            res.send(result);
+
+        });
+
+
+        // Product Details API
+
+        app.get("/products/:id", async (req, res) => {
+
+
+            const id = req.params.id;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            }
+
+
+            const result = await productsCollection.findOne(query);
+
+
+            res.send(result);
+
+
+        })
 
         await client.db("admin").command({ ping: 1 });
         console.log("✅ Connected to MongoDB!");
