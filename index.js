@@ -4,15 +4,28 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
+const { auth } = require("./auth");
+const { toNodeHandler } = require("better-auth/node");
+
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/api/auth", toNodeHandler(auth));
+
 
 // MongoDB Connection
 const uri = `mongodb+srv://resellhub_a10_afrin:Rf8YArqaOHY2lkIS@cluster0.0ogo0ei.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -55,7 +68,7 @@ async function run() {
             res.send(result);
 
         });
-        
+
 
         // All Products API
 
