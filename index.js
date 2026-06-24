@@ -136,7 +136,7 @@ async function run() {
 
         })
 
-        // Add Product
+        // Add Product API
 
         app.post("/products", async (req, res) => {
 
@@ -148,6 +148,68 @@ async function run() {
 
         });
         
+
+        // Update Product
+
+
+        app.put("/products/:id", async (req, res) => {
+
+
+            const id = req.params.id;
+
+            const updated = req.body;
+
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            }
+
+
+
+            const updateDoc = {
+
+
+                $set: updated
+
+
+            }
+
+
+
+            const result = await productsCollection.updateOne(
+
+                query,
+
+                updateDoc
+
+            )
+
+
+            res.send(result);
+
+
+        })
+
+
+        // Delete Product
+
+        app.delete("/products/:id", async (req, res) => {
+
+            const id = req.params.id;
+
+            const query = {
+                _id: new ObjectId(id)
+            };
+
+            const result = await productsCollection.deleteOne(query);
+
+            res.send(result);
+
+        });
+
 
         // My Products API
 
