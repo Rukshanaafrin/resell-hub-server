@@ -147,9 +147,22 @@ async function run() {
             res.send(result);
 
         });
-        
 
-        // Update Product
+
+        // Get All Orders API
+
+        app.get("/orders", async (req, res) => {
+
+            const result = await ordersCollection
+                .find()
+                .toArray();
+
+            res.send(result);
+
+        })
+
+
+        // Update Product API
 
 
         app.put("/products/:id", async (req, res) => {
@@ -180,6 +193,59 @@ async function run() {
 
 
             const result = await productsCollection.updateOne(
+
+                query,
+
+                updateDoc
+
+            )
+
+
+            res.send(result);
+
+
+        })
+
+        
+        // Update Order Status
+
+
+        app.patch("/orders/:id", async (req, res) => {
+
+
+            const id = req.params.id;
+
+            const body = req.body;
+
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            }
+
+
+
+            const updateDoc = {
+
+
+                $set: {
+
+
+                    status: body.status,
+
+                    delivery: body.delivery
+
+
+                }
+
+
+            }
+
+
+
+            const result = await ordersCollection.updateOne(
 
                 query,
 
