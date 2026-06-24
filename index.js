@@ -59,6 +59,101 @@ async function run() {
         });
 
 
+        // Get Single User
+
+        app.get("/users/:email", async (req, res) => {
+
+            const email = req.params.email;
+
+            const query = {
+                email: email
+            };
+
+            const result = await usersCollection.findOne(query);
+
+            res.send(result);
+
+        });
+
+
+        // ======================
+        // Settings API
+        // ======================
+
+        app.patch("/settings/:id", async (req, res) => {
+
+            const id = req.params.id;
+            const body = req.body;
+
+            const query = {
+                _id: new ObjectId(id)
+            };
+
+            const updateDoc = {
+                $set: {
+                    darkMode: body.darkMode,
+                    notifications: body.notifications
+                }
+            };
+
+            const result = await usersCollection.updateOne(
+                query,
+                updateDoc
+            );
+
+            res.send(result);
+
+        });
+
+
+
+        // Update Profile
+
+        app.patch("/update-profile/:id", async (req, res) => {
+
+            const id = req.params.id;
+
+            const body = req.body;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const updateDoc = {
+
+                $set: {
+
+                    name: body.name,
+
+                    phone: body.phone,
+
+                    address: body.address,
+
+                    photo: body.photo
+
+                }
+
+            };
+
+
+            const result = await usersCollection.updateOne(
+
+                query,
+
+                updateDoc
+
+            );
+
+
+            res.send(result);
+
+        });
+
+
         // Update User Status
 
         app.patch("/users/:id", async (req, res) => {
