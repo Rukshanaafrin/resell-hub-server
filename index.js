@@ -130,14 +130,36 @@ async function run() {
 
             }
 
-
             const result = await productsCollection.findOne(query);
-
 
             res.send(result);
 
-
         })
+
+        // Add Product
+
+        app.post("/products", async (req, res) => {
+
+            const product = req.body;
+
+            const result = await productsCollection.insertOne(product);
+
+            res.send(result);
+
+        });
+        
+
+        // My Products API
+
+        app.get("/my-products", async (req, res) => {
+
+            const result = await productsCollection
+                .find()
+                .toArray();
+
+            res.send(result);
+
+        });
 
         await client.db("admin").command({ ping: 1 });
         console.log("✅ Connected to MongoDB!");
