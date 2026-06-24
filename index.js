@@ -426,6 +426,69 @@ async function run() {
         });
 
 
+        // =====================
+        // Wishlist APIs
+        // =====================
+
+        // Get Wishlist
+
+        app.get("/wishlist", async (req, res) => {
+
+            const result = await wishlistCollection
+                .find()
+                .toArray();
+
+            res.send(result);
+
+        });
+
+
+
+
+        // Add Wishlist
+
+        app.post("/wishlist", async (req, res) => {
+
+
+            const item = req.body;
+
+
+            const result = await wishlistCollection.insertOne(item);
+
+
+            res.send(result);
+
+
+        });
+
+
+
+
+        // Remove Wishlist
+
+
+        app.delete("/wishlist/:id", async (req, res) => {
+
+
+            const id = req.params.id;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const result = await wishlistCollection.deleteOne(query);
+
+
+            res.send(result);
+
+
+        });
+
+
         // Delete Product
 
         app.delete("/products/:id", async (req, res) => {
@@ -437,6 +500,19 @@ async function run() {
             };
 
             const result = await productsCollection.deleteOne(query);
+
+            res.send(result);
+
+        });
+
+
+        // Payment History API
+
+        app.get("/payments", async (req, res) => {
+
+            const result = await paymentsCollection
+                .find()
+                .toArray();
 
             res.send(result);
 
