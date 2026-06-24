@@ -46,17 +46,89 @@ async function run() {
         const database = client.db("resellhub_db");
 
         // Collections
-        const usersCollection = database.collection("users");
+        const usersCollection = database.collection("user");
         const productsCollection = database.collection("products");
         const ordersCollection = database.collection("orders");
         const wishlistCollection = database.collection("wishlist");
         const paymentsCollection = database.collection("payments");
 
-        // Test API
+        // Test API / Get User API
         app.get("/users", async (req, res) => {
             const result = await usersCollection.find().toArray();
             res.send(result);
         });
+
+
+        // Update User Status
+
+        app.patch("/users/:id", async (req, res) => {
+
+            const id = req.params.id;
+
+            const body = req.body;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const updateDoc = {
+
+                $set: {
+
+                    status: body.status
+
+                }
+
+            };
+
+
+            const result = await usersCollection.updateOne(
+
+                query,
+
+                updateDoc
+
+            );
+
+
+            res.send(result);
+
+        });
+
+
+
+        // Delete User
+
+
+        app.delete("/users/:id", async (req, res) => {
+
+
+            const id = req.params.id;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const result = await usersCollection.deleteOne(
+
+                query
+
+            );
+
+
+            res.send(result);
+
+        });
+
+
 
         // Featured Products API
         app.get("/featured-products", async (req, res) => {
@@ -162,6 +234,86 @@ async function run() {
         })
 
 
+        // Get All Products For Admin
+
+        app.get("/admin-products", async (req, res) => {
+
+            const result = await productsCollection
+                .find()
+                .toArray();
+
+            res.send(result);
+
+        });
+
+
+        // Update Product Status
+
+        app.patch("/admin-products/:id", async (req, res) => {
+
+            const id = req.params.id;
+
+            const body = req.body;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const updateDoc = {
+
+                $set: {
+
+                    status: body.status
+
+                }
+
+            };
+
+
+            const result = await productsCollection.updateOne(
+
+                query,
+
+                updateDoc
+
+            );
+
+
+            res.send(result);
+
+        });
+
+
+        // Delete Product By Admin
+
+        app.delete("/admin-products/:id", async (req, res) => {
+
+            const id = req.params.id;
+
+
+            const query = {
+
+                _id: new ObjectId(id)
+
+            };
+
+
+            const result = await productsCollection.deleteOne(
+
+                query
+
+            );
+
+
+            res.send(result);
+
+        });
+
+
         // Update Product API
 
 
@@ -206,7 +358,7 @@ async function run() {
 
         })
 
-        
+
         // Update Order Status
 
 
