@@ -359,57 +359,71 @@ async function run() {
         })
 
 
-        // Update Order Status
 
+        // Update Order Status
 
         app.patch("/orders/:id", async (req, res) => {
 
+            const id = req.params.id;
+            const body = req.body;
+
+            const query = {
+                _id: new ObjectId(id)
+            };
+
+            const updateDoc = {
+                $set: {}
+            };
+
+            if (body.status) {
+                updateDoc.$set.status = body.status;
+            }
+
+            if (body.delivery) {
+                updateDoc.$set.delivery = body.delivery;
+            }
+
+            const result = await ordersCollection.updateOne(
+                query,
+                updateDoc
+            );
+
+            res.send(result);
+
+        });
+
+
+        // Cancel Order
+
+        app.patch("/cancel-order/:id", async (req, res) => {
 
             const id = req.params.id;
 
-            const body = req.body;
-
-
-
             const query = {
-
                 _id: new ObjectId(id)
-
-            }
-
-
+            };
 
             const updateDoc = {
 
-
                 $set: {
 
-
-                    status: body.status,
-
-                    delivery: body.delivery
-
+                    status: "Cancelled"
 
                 }
 
-
-            }
-
+            };
 
 
             const result = await ordersCollection.updateOne(
 
                 query,
-
                 updateDoc
 
-            )
-
+            );
 
             res.send(result);
 
-
-        })
+        });
 
 
         // Delete Product
