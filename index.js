@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -26,6 +27,30 @@ app.use(cookieParser());
 
 app.use("/api/auth", toNodeHandler(auth));
 
+// JWT Generate Token API
+
+app.post("/jwt", (req, res) => {
+
+    const user = req.body;
+
+    const token = jwt.sign(
+
+        user,
+
+        process.env.JWT_SECRET,
+
+        {
+            expiresIn: "7d"
+        }
+
+    );
+
+    res.send({
+        token
+    });
+
+});
+
 
 // MongoDB Connection
 const uri = `mongodb+srv://resellhub_a10_afrin:Rf8YArqaOHY2lkIS@cluster0.0ogo0ei.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -37,6 +62,57 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     },
 });
+
+
+// Verify JWT Middleware
+
+const verifyToken = (req, res, next) => {
+
+    const authorization = req.headers.authorization;
+
+    if (!authorization) {
+
+        return res.status(401).send({
+
+            message: "Unauthorized Access"
+
+        });
+
+    }
+
+
+    const token = authorization.split(" ")[1];
+
+
+    jwt.verify(
+
+        token,
+
+        process.env.JWT_SECRET,
+
+        (err, decoded) => {
+
+
+            if (err) {
+
+                return res.status(403).send({
+
+                    message: "Forbidden Access"
+
+                });
+
+            }
+
+
+            req.decoded = decoded;
+
+            next();
+
+        }
+
+    );
+
+};
 
 async function run() {
     try {
@@ -51,6 +127,7 @@ async function run() {
         const ordersCollection = database.collection("orders");
         const wishlistCollection = database.collection("wishlist");
         const paymentsCollection = database.collection("payments");
+        const reportsCollection = database.collection("reports");
 
         // Test API / Get User API
         app.get("/users", async (req, res) => {
@@ -527,15 +604,23 @@ async function run() {
 
         // Get Wishlist
 
-        app.get("/wishlist", async (req, res) => {
+        app.get(
 
-            const result = await wishlistCollection
-                .find()
-                .toArray();
+            "/wishlist",
 
-            res.send(result);
+            verifyToken,
 
-        });
+            async (req, res) => {
+
+                const result = await wishlistCollection
+                    .find()
+                    .toArray();
+
+                res.send(result);
+
+            }
+
+        );
 
 
 
@@ -580,6 +665,21 @@ async function run() {
 
             res.send(result);
 
+
+        });
+
+
+
+        // Report Product API
+
+
+        app.post("/reports", async (req, res) => {
+
+            const report = req.body;
+
+            const result = await reportsCollection.insertOne(report);
+
+            res.send(result);
 
         });
 
