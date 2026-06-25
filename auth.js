@@ -14,7 +14,7 @@ console.log("SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 exports.auth = betterAuth({
 
     trustedOrigins: [
-        "https://resell-hub-client-blond.vercel.app/"
+        "https://resell-hub-client-blond.vercel.app"
     ],
 
     emailAndPassword: {
