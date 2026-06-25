@@ -11,69 +11,31 @@ const db = client.db(process.env.AUTH_DB_NAME);
 console.log("ID:", process.env.GOOGLE_CLIENT_ID);
 console.log("SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 
-// exports.auth = betterAuth({
-
-//     trustedOrigins: [
-//         "https://resell-hub-client-blond.vercel.app"
-//     ],
-
-//     emailAndPassword: {
-//         enabled: true
-//     },
-
-//     socialProviders: {
-
-//         google: {
-
-//             clientId: process.env.GOOGLE_CLIENT_ID,
-
-//             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-
-//         },
-
-//     },
-
-//     database: mongodbAdapter(db, {
-//         client
-//     })
-
-// });
-
 exports.auth = betterAuth({
 
-    baseURL:
-        "https://resell-hub-server.onrender.com",
-
     trustedOrigins: [
-
         "https://resell-hub-client-blond.vercel.app"
-
     ],
 
     emailAndPassword: {
-
         enabled: true
-
     },
 
     socialProviders: {
 
         google: {
 
-            clientId:
-                process.env.GOOGLE_CLIENT_ID,
+            clientId: process.env.GOOGLE_CLIENT_ID,
 
-            clientSecret:
-                process.env.GOOGLE_CLIENT_SECRET,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
         },
 
     },
 
     database: mongodbAdapter(db, {
-
         client
-
     })
 
 });
+
