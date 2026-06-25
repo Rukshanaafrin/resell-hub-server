@@ -8,7 +8,7 @@ Backend API server for ReSell Hub Marketplace.
 
 Live API URL
 
-
+https://resell-hub-server.onrender.com/
 
 ---
 
