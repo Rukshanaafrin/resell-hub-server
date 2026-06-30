@@ -18,7 +18,10 @@ const port = process.env.PORT || 5000;
 
 app.use(
     cors({
-        origin: "https://resell-hub-client-blond.vercel.app",
+        origin: [
+            "http://localhost:3000",
+            "https://resell-hub-client-blond.vercel.app",
+        ],
         credentials: true,
     })
 );
@@ -134,6 +137,31 @@ async function run() {
         app.get("/users", async (req, res) => {
             const result = await usersCollection.find().toArray();
             res.send(result);
+        });
+
+
+        // Create User
+
+        app.post("/users", async (req, res) => {
+
+            const user = req.body;
+
+            const existingUser = await usersCollection.findOne({
+                email: user.email
+            });
+
+            if (existingUser) {
+
+                return res.send({
+                    message: "User already exists"
+                });
+
+            }
+
+            const result = await usersCollection.insertOne(user);
+
+            res.send(result);
+
         });
 
 
