@@ -13,6 +13,7 @@ console.log("SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 
 exports.auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
+  secret: process.env.BETTER_AUTH_SECRET,
 
     trustedOrigins: [
         "http://localhost:3000",
