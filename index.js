@@ -4,8 +4,6 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
-const { auth } = require("./auth");
-const { toNodeHandler } = require("better-auth/node");
 
 dotenv.config();
 
@@ -28,15 +26,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", toNodeHandler(auth));
-
-
-
-   
-
 
 // MongoDB Connection
-const uri = `mongodb+srv://resellhub_a10_afrin:Rf8YArqaOHY2lkIS@cluster0.0ogo0ei.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = process.env.MONGO_DB_URI;
 
 const client = new MongoClient(uri, {
     serverApi: {
