@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -31,29 +30,9 @@ app.use(cookieParser());
 
 app.use("/api/auth", toNodeHandler(auth));
 
-// JWT Generate Token API
 
-app.post("/jwt", (req, res) => {
 
-    const user = req.body;
-
-    const token = jwt.sign(
-
-        user,
-
-        process.env.JWT_SECRET,
-
-        {
-            expiresIn: "7d"
-        }
-
-    );
-
-    res.send({
-        token
-    });
-
-});
+   
 
 
 // MongoDB Connection
@@ -68,55 +47,7 @@ const client = new MongoClient(uri, {
 });
 
 
-// Verify JWT Middleware
 
-const verifyToken = (req, res, next) => {
-
-    const authorization = req.headers.authorization;
-
-    if (!authorization) {
-
-        return res.status(401).send({
-
-            message: "Unauthorized Access"
-
-        });
-
-    }
-
-
-    const token = authorization.split(" ")[1];
-
-
-    jwt.verify(
-
-        token,
-
-        process.env.JWT_SECRET,
-
-        (err, decoded) => {
-
-
-            if (err) {
-
-                return res.status(403).send({
-
-                    message: "Forbidden Access"
-
-                });
-
-            }
-
-
-            req.decoded = decoded;
-
-            next();
-
-        }
-
-    );
-
-};
 
 async function run() {
     try {
@@ -636,8 +567,6 @@ async function run() {
         app.get(
 
             "/wishlist",
-
-            verifyToken,
 
             async (req, res) => {
 

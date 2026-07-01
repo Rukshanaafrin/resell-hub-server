@@ -8,6 +8,8 @@ const client = new MongoClient(process.env.MONGO_DB_URI);
 
 const db = client.db(process.env.AUTH_DB_NAME);
 
+
+
 console.log("ID:", process.env.GOOGLE_CLIENT_ID);
 console.log("SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 

@@ -18,7 +18,6 @@ Authentication
 
 - Better Auth
 - Google Login
-- JWT Token Generation
 - Verify Token Middleware
 
 Database Collections
@@ -61,8 +60,6 @@ Security Features
 
 Environment Variables
 
-JWT Secret Key
-
 MongoDB Credentials Protection
 
 CORS Configuration
@@ -78,8 +75,6 @@ Node.js
 Express.js
 
 MongoDB
-
-JWT
 
 Better Auth
 
@@ -119,8 +114,6 @@ DB_USER=
 
 DB_PASS=
 
-JWT_SECRET=
-
 BETTER_AUTH_SECRET=
 
 BETTER_AUTH_URL=
@@ -142,5 +135,3 @@ No 404 Errors
 No 504 Errors
 
 Protected Routes Stay Logged In
-
-JWT Protected APIs
